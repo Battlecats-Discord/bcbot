@@ -1,7 +1,9 @@
-import { CacheType, CommandInteraction, SlashCommandBuilder } from "discord.js";
+import { ChatInputCommandInteraction, SlashCommandBuilder } from "discord.js";
 
 export interface Command {
-  run: (i: CommandInteraction<CacheType>) => void | Promise<void>;
+  run: (i: ChatInputCommandInteraction) => void | Promise<void>;
   name: string;
-  data: SlashCommandBuilder;
+  data:
+    | SlashCommandBuilder
+    | Omit<SlashCommandBuilder, "addSubcommand" | "addSubcommandGroup">;
 }
