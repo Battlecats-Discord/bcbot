@@ -6,7 +6,7 @@ import { PokeCommand } from "./poke";
 import { BosyuuCommand } from "./bosyuu";
 import { VerifyCommand } from "./verify";
 import { EventCommand } from "./event";
-import {RolepanelCommand} from "./rolepanel";
+import { RolepanelCommand } from "./rolepanel";
 
 export default [
   PingCommand,
