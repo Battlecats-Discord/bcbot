@@ -7,6 +7,7 @@ import { BosyuuCommand } from "./bosyuu";
 import { VerifyCommand } from "./verify";
 import { EventCommand } from "./event";
 import { RolepanelCommand } from "./rolepanel";
+import { CreateVcCommand } from "./vc";
 
 export default [
   PingCommand,
@@ -18,4 +19,5 @@ export default [
   VerifyCommand,
   EventCommand,
   RolepanelCommand,
+  CreateVcCommand
 ];
