@@ -15,7 +15,7 @@ export function getVcList(client: Client) {
 			(x) =>
 				!excluded.includes(x.id) &&
 				x.type === ChannelType.GuildVoice &&
-				x.guildId === guild && 
+				x.guildId === guild &&
 				x.createdTimestamp + 1000 * 60 * 5 < Date.now()
 		)
 		.map((x) => x.id);
@@ -23,12 +23,15 @@ export function getVcList(client: Client) {
 
 export async function getConnectionList(client: Client) {
 	if (!guild) return null;
-	const members = client.guilds.cache.get(guild)?.members.cache?.filter(x =>  x.voice.channelId);
+	const members = client.guilds.cache
+		.get(guild)
+		?.members.cache?.filter((x) => x.voice.channelId);
 	if (!members) return null;
+	const trueMembers: Exclude<ReturnType<typeof members.get>, undefined>[] = [];
 	for (const member of members.values()) {
-		await member.fetch();
+		trueMembers.push(await member.fetch());
 	}
-	const channels = members.map((x) => ({
+	const channels = trueMembers.map((x) => ({
 		id: x.id,
 		vc: x.voice.channelId,
 	}));
