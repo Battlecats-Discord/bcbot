@@ -2,11 +2,11 @@ import { ChannelType, Collection } from "discord.js";
 import { Client } from "../structures/client";
 
 const parent = process.env.VC_PARENT;
-const excluded = process.env.VC_EXCLUDED?.split(",");
+const excluded = process.env.VC_EXCLUDED?.split(",") ?? [];
 const guild = process.env.GUILD_ID;
 
 export function getVcList(client: Client) {
-	if (!(excluded && parent && guild)) return [];
+	if (!(excluded.length && parent && guild)) return [];
 	const vcs = client.channels.cache.filter(
 		(c) => "parentId" in c && c.parentId === parent
 	);
@@ -16,7 +16,7 @@ export function getVcList(client: Client) {
 				!excluded.includes(x.id) &&
 				x.type === ChannelType.GuildVoice &&
 				x.guildId === guild && 
-				x.createdTimestamp + 1000 * 60 * 5 > Date.now()
+				x.createdTimestamp + 1000 * 60 * 5 < Date.now()
 		)
 		.map((x) => x.id);
 }
