@@ -18,7 +18,7 @@ export async function getEmpty(client: Client) {
 	);
 	const vcList: VoiceChannel[] = [];
 	for (const vc of vcs.values()) {
-		vcList.push((await vc.fetch()) as VoiceChannel);
+		vcList.push((await (vc as VoiceChannel).fetch(true)) as VoiceChannel);
 	}
 	return vcList.filter((x) => x.members.size === 0).map((x) => x.id);
 }
