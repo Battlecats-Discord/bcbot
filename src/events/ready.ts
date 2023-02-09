@@ -9,15 +9,13 @@ export const ReadyEvent: Event<"ready"> = {
 			commands.push(command.data.toJSON());
 		}
 		client.application?.commands.set(commands);
-		setInterval(async() => {
-			console.log(await getEmpty(client))
+		setInterval(() => {
+			console.log(getEmpty(client))
 		}, 1000 * 60 * 5);
-		console.log(await getEmpty(client))
+		console.log(getEmpty(client))
 		process.stdin.on("data", d => {
 			if (d.toString().trim() === "get") {
-				getEmpty(client).then(x => {
-					console.log(x);
-				});
+				console.log(getEmpty(client));
 			}
 		})
 	},
