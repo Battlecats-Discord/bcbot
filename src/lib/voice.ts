@@ -28,11 +28,12 @@ export function getConnectionList(client: Client) {
 		members
 			?.map((x) => ({ vc: x.voice.channelId, member: x.id }))
 			.filter((x) => x.vc) ?? [];
+	console.log(channels);
 	const c = new Collection<string, number>();
 	for (const channel of channels) {
 		if (!channel.vc) continue;
 		if (c.has(channel.vc)) {
-			c.set(channel.vc, c.get(channel.vc)! + 1);
+			c.set(channel.vc, (c.get(channel.vc) ?? 0) + 1);
 		} else {
 			c.set(channel.vc, 1);
 		}
