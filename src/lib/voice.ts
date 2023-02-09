@@ -21,14 +21,17 @@ export function getVcList(client: Client) {
 		.map((x) => x.id);
 }
 
-export function getConnectionList(client: Client) {
+export async function getConnectionList(client: Client) {
 	if (!guild) return null;
-	const members = client.guilds.cache.get(guild)?.members.cache;
-	const channels =
-		members
-			?.map((x) => ({ vc: x.voice.channelId, member: x.id }))
-			.filter((x) => x.vc) ?? [];
-	console.log(channels);
+	const members = client.guilds.cache.get(guild)?.members.cache?.filter(x =>  x.voice.channelId);
+	if (!members) return null;
+	for (const member of members.values()) {
+		await member.fetch();
+	}
+	const channels = members.map((x) => ({
+		id: x.id,
+		vc: x.voice.channelId,
+	}));
 	const c = new Collection<string, number>();
 	for (const channel of channels) {
 		if (!channel.vc) continue;
@@ -41,16 +44,16 @@ export function getConnectionList(client: Client) {
 	return c;
 }
 
-export function getEmpty(client: Client) {
+export async function getEmpty(client: Client) {
 	const vcs = getVcList(client);
-	const conns = getConnectionList(client);
+	const conns = await getConnectionList(client);
 	if (!conns) return [];
 	const empty = vcs.filter((x) => conns.get(x) === 0 || !conns.has(x));
 	return empty;
 }
 
-export function purgeEmpty(client: Client) {
-	const empty = getEmpty(client);
+export async function purgeEmpty(client: Client) {
+	const empty = await getEmpty(client);
 	for (const vc of empty) {
 		client.channels.cache.get(vc)?.delete();
 	}
