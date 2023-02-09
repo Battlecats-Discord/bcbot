@@ -33,8 +33,20 @@ export const CreateVcCommand: Command = {
 		}
 		const query = i.options.getString("query");
 		if (!query) return;
+		if(query.length > 7) {
+			await i.reply({
+				embeds: [
+					new EmbedBuilder()
+						.setTitle("エラー")
+						.setDescription("VC名は7文字以下にしてください")
+						.setColor(Colors.Red)
+				]
+			});
+			return;
+		}
+		const limit = i.options.getInteger("limit");
 		const channel = await i.guild.channels.create({
-            name: query,
+            name: `🔊｜${query}`,
 			type: ChannelType.GuildVoice,
 			parent: process.env.VC_PARENT,
 			permissionOverwrites: [
@@ -47,6 +59,7 @@ export const CreateVcCommand: Command = {
 					allow: [PermissionFlagsBits.Connect],
 				},
 			],
+			userLimit: limit || undefined
 		});
         await i.reply({
             embeds: [
@@ -62,5 +75,8 @@ export const CreateVcCommand: Command = {
 		.setDescription("VCを作成します")
 		.addStringOption((option) =>
 			option.setName("query").setDescription("名前").setRequired(true)
+		)
+		.addIntegerOption((option) =>
+			option.setName("limit").setDescription("最大人数").setMaxValue(99).setMinValue(1)
 		),
 };

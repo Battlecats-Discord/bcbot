@@ -44,7 +44,7 @@ export function getEmpty(client: Client) {
 	const vcs = getVcList(client);
 	const conns = getConnectionList(client);
 	if (!conns) return [];
-	const empty = vcs.filter((x) => conns.get(x) === 0);
+	const empty = vcs.filter((x) => conns.get(x) === 0 || !conns.has(x));
 	return empty;
 }
 
