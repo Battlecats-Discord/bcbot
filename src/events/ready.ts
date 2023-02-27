@@ -1,4 +1,3 @@
-import { getEmpty } from "../lib/voice";
 import { Event } from "../structures/event";
 
 export const ReadyEvent: Event<"ready"> = {
@@ -9,15 +8,6 @@ export const ReadyEvent: Event<"ready"> = {
 			commands.push(command.data.toJSON());
 		}
 		client.application?.commands.set(commands);
-		setInterval(async () => {
-			console.log(await getEmpty(client))
-		}, 1000 * 60 * 5);
-		console.log(await getEmpty(client))
-		process.stdin.on("data", async d => {
-			if (d.toString().trim() === "get") {
-				console.log(await getEmpty(client));
-			}
-		})
 	},
 	name: "ready",
 	once: true,
